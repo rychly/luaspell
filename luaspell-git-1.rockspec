@@ -6,7 +6,7 @@ description = {
     detailed = [[
 A Lua binding to the Hunspell spell checking engine. It is a thin wrapper over libhunspell.
 ]],
-    homepage = "https://github.com/mkottman/luaspell",
+    homepage = "https://gitlab.com/rychly/luaspell",
     license = "MIT"
 }
 
@@ -16,7 +16,7 @@ source = {
 }
 
 dependencies = {
-    "lua >= 5.1, < 5.2"
+    "lua >= 5.1, < 5.4"
 }
 
 external_dependencies = {
@@ -27,7 +27,8 @@ build = {
    variables = {
    	INSTALL_CMOD      = "$(LIBDIR)",
 	CMAKE_BUILD_TYPE  = "$(CMAKE_BUILD_TYPE)",
-	["CFLAGS:STRING"] = "$(CFLAGS)"
+	["CFLAGS:STRING"] = "$(CFLAGS)",
+	HUNSPELL_LIBRARY  = "$(HUNSPELL_LIBRARY)"
    }
 }
 

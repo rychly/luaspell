@@ -136,7 +136,11 @@ static int l_generate(lua_State *L) {
 		int n = sp->generate(&list, word, example);
 		RETURN_LIST;
 	} else if (lua_type(L, 3) == LUA_TTABLE) {
-		int howmany = lua_objlen(L, 3);
+		#if LUA_VERSION_NUM >= 502
+		int howmany = lua_rawlen(L, 3);	/* 5.2 */
+		#else
+		int howmany = lua_objlen(L, 3);	/* 5.1 */
+		#endif
 		char ** desc = (char**) calloc(howmany, sizeof(char*));
 		for (int i=0; i<howmany; i++) {
 			lua_rawgeti(L, 3, i+1);
@@ -202,7 +206,11 @@ static int g_spell(lua_State *L) {
 
 static void createMetatable(lua_State *L, const char *name, luaL_Reg *methods) {
 	luaL_newmetatable(L, name);
-	luaL_register(L, NULL, methods);
+	#if LUA_VERSION_NUM >= 502
+	luaL_newlib(L, methods);	/* 5.2 */
+	#else
+	luaL_register(L, NULL, methods);	/* 5.1 */
+	#endif
 	lua_getfield(L, -1, "__index");
 	if (lua_isnil(L, -1)) {
 		lua_pop(L, 1);
